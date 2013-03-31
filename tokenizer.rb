@@ -36,24 +36,27 @@ class Tokenizer < Sinatra::Base
 
   def self.process(words)
     #words = words.unshift '<a>'
+    max_length = MAX_SEGMENT_LENGTH_EN
     window_result = []
     inverted_result = []
-    (-MAXIMUM_WORD_LENGTH+2..words.length).each do |i|
-      snippet = words[[i,0].max...MAXIMUM_WORD_LENGTH+i]
-      $out << "\n\n<br>SNIPPET: " << snippet << "<br>\n"
+    (2..max_length).each do |segment_length|
+      (0..words.length-2).each do |i|
+        snippet = words[i...segment_length+i]
+        $out << "\n\n<br>SNIPPET: " << snippet << "<br>\n"
 
-      # cycle through window size from 1 ... snippet end
-      (1...snippet.length).each do |window_size|
-        left_s = 0
-        left_e = 0
-        right_s = window_size
-        right_e = snippet.length
-        (0..snippet.length-window_size).each do |j|
-          window = snippet[j...j+window_size]
-          window_result << [window.join,
-            "#{snippet[left_s...left_e].join} | #{snippet[right_s...snippet.length].join}"]
-          left_e += 1
-          right_s += 1
+        # cycle through window size from 1 ... snippet end
+        (1...snippet.length).each do |window_size|
+          left_s = 0
+          left_e = 0
+          right_s = window_size
+          right_e = snippet.length
+          (0..snippet.length-window_size).each do |j|
+            window = snippet[j...j+window_size]
+            window_result << [window.join,
+              "#{snippet[left_s...left_e].join} | #{snippet[right_s...snippet.length].join}"]
+            left_e += 1
+            right_s += 1
+          end
         end
       end
     end
