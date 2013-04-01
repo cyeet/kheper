@@ -2,7 +2,7 @@ require 'stringio'
 require 'sinatra/base'
 require 'sinatra/reloader'
 
-class Parser
+class TranslationFile
   include Enumerable
 
   def initialize(path, external_encoding: 'utf-8')
@@ -14,6 +14,8 @@ class Parser
     @log.each_line do | line |
       yield line
     end
+  rescue
+    yield ''
   end
 end
 
@@ -36,11 +38,11 @@ class Tokenizer < Sinatra::Base
 
   def self.process(words)
     #words = words.unshift '<a>'
-    max_length = MAX_SEGMENT_LENGTH_EN
+    max_length = [MAX_SEGMENT_LENGTH_EN, words.length].min
     window_result = []
     inverted_result = []
     (2..max_length).each do |segment_length|
-      (0..words.length-2).each do |i|
+      (0..words.length-segment_length).each do |i|
         snippet = words[i...segment_length+i]
         $out << "\n\n<br>SNIPPET: " << snippet << "<br>\n"
 
