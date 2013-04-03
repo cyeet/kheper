@@ -6,9 +6,10 @@ gem 'sinatra-activerecord'
 gem 'pry'
 
 gem 'awesome_print'
+gem 'iconv'
 
 gem 'haml'
 gem 'activerecord'
 gem 'pg' #postgesql
 gem 'thin'
-gem 'xml-simple' #parse xml documents
+gem 'nokogiri'

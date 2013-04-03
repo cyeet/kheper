@@ -10,6 +10,12 @@ class TranslationFile
     @log = File.open(path, "r:#{external_encoding}:utf-8")
   end
 
+  def read
+    out = @log.read
+    @log.rewind
+    out
+  end
+
   def each(&block)
     @log.each_line do | line |
       yield line

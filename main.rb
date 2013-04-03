@@ -7,9 +7,10 @@ require 'sinatra/activerecord'
 require 'sinatra/streaming'
 require 'sinatra/reloader' if development?
 require 'haml'
-require 'xmlsimple'
+require 'nokogiri'
 require './library'
 require './tokenizer'
+require 'iconv'
 
 get '/parse' do
   haml :layout
@@ -19,31 +20,48 @@ get '/parse' do
   end
 end
 
+
 get '/encoding' do
-  output = []
-  output << ('Empty')
-  filename = 'corpora/ch_news_trans/data/translation/AFC20020701.0014.sgm'
-  CHINESE_ENCODINGS.each do |encoding|
-    file = TranslationFile.new "#{filename}", external_encoding: encoding
-    file.take(10).each do |line|
-      output << encoding << "#{line}<br/>" unless line.nil? || line.empty?
-    end
-  end
-  output
+  @encodings = []
+  @folders = Dir['data/*/']
+  haml :encoding
 end
 
-get '/import' do
+post '/encoding' do
+  @encodings = {}
+  @folders = Dir["#{params[:folder]}*/"]
+  unless @folders.length > 0
+    librbfiles = File.join("**", params[:folder], "**", "*")
+    filename = Dir.glob(librbfiles).first
+    CHINESE_ENCODINGS.each do |encoding|
+      file = TranslationFile.new "#{filename}", external_encoding: encoding
+      @encodings[encoding] = []
+      file.each do |line|
+        @encodings[encoding] << "#{::Iconv.conv('UTF-8//IGNORE', 'UTF-8', line + ' ')[0..-2]}"
+      end
+    end
+  end
+  haml :encoding
+end
+
+get '/import/:encoding/*' do
   stream do |out|
 
-  folder = 'data/cd.data'
-  files = Dir.entries("#{folder}/Chinese") - %w(. .. .DS_Store)  #skip system files
+  template = File.read('views/layout.haml')
+  #out << Haml::Engine.new(template).render(Proc.new {|n| n}, :foo => 's')
+  folder = params[:splat][0]
+  files = Dir.entries(folder) - %w(. .. .DS_Store)  #skip system files
   files.each do |filename|
-    out << filename << '<br>'
-    file1 = TranslationFile.new "#{folder}/Chinese/#{filename}", external_encoding:'utf-8'
-    file2 = TranslationFile.new "#{folder}/English/#{filename.gsub(/raw/,'eng')}", external_encoding:'utf-8'
+    out << "#{folder}#{filename.gsub(/raw/,'eng')}" << '<br>'
+    file1 = TranslationFile.new "#{folder}#{filename}", external_encoding: params[:encoding]
+    file2 = TranslationFile.new "#{File.dirname folder}/English/#{filename.gsub(/raw/,'eng')}"
+    text1 = file1.read.gsub(/ID=(\d+)/, 'ID="\1"')
+    text2 = file2.read.gsub(/ID=(\d+)/, 'ID="\1"')
+    chinese = Nokogiri::XML(text1).css('S')
+    english = Nokogiri::XML(text2).css('S')
 
-    file2.each do |line1|
-      out << line1
+    (0...chinese.length).each do |i|
+      out << chinese[i].text << english[i].text
     end
   end
 

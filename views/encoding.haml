@@ -1,0 +1,12 @@
+%form{:action => "/encoding", :method => 'post'}
+  %select{:name => :folder}
+    - @folders.each do |folder|
+      %option{:value => folder}= folder
+  %input(type='submit')
+
+%table.table.table-striped.table-bordered
+  - @encodings.each do |encoding, text|
+    %tr
+      %td
+        %a{:href => "import/#{encoding}/#{params[:folder]}"}= encoding
+      %td&= p text
