@@ -55,13 +55,11 @@ get '/import/:encoding/*' do
     out << "#{folder}#{filename.gsub(/raw/,'eng')}" << '<br>'
     file1 = TranslationFile.new "#{folder}#{filename}", external_encoding: params[:encoding]
     file2 = TranslationFile.new "#{File.dirname folder}/English/#{filename.gsub(/raw/,'eng')}"
-    text1 = file1.read.gsub(/ID=(\d+)/, 'ID="\1"')
-    text2 = file2.read.gsub(/ID=(\d+)/, 'ID="\1"')
-    chinese = Nokogiri::XML(text1).css('S')
-    english = Nokogiri::XML(text2).css('S')
+    chinese = Nokogiri::XML(file1.read.gsub(/ID=(\d+)/, 'ID="\1"')).css('S')
+    english = Nokogiri::XML(file2.read.gsub(/ID=(\d+)/, 'ID="\1"')).css('S')
 
     (0...chinese.length).each do |i|
-      out << chinese[i].text << english[i].text
+      ChEnTranslation.create :ch => chinese[i].text, :en =>  english[i].text, :source => params[:splat][0]
     end
   end
 

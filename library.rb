@@ -7,10 +7,14 @@ class EnglishPhrase < ActiveRecord::Base
 end
 
 class ChEnTranslation < ActiveRecord::Base
+  has_many :en_analyses
+  has_many :ch_analyses
 end
 
 class EnAnalysis < ActiveRecord::Base
+  belongs_to :ch_en_translation
 end
 
 class ChAnalysis < ActiveRecord::Base
+  belongs_to :ch_en_translation
 end
