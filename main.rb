@@ -58,8 +58,12 @@ get '/import/:encoding/*' do
     english = Nokogiri::XML(file2.read.gsub(/ID=(\d+)/, 'ID="\1"')).css('S')
 
     (0...chinese.length).each do |i|
-      translation = ChEnTranslation.create :ch => chinese[i].text, :en =>  english[i].text, :source => params[:splat][0]
-      Tokenizer.process translation.en, translation
+      begin
+        translation = ChEnTranslation.create! :ch => chinese[i].text, :en =>  english[i].text, :source => params[:splat][0]
+        Tokenizer.process(translation.en, translation, :en) if translation
+        Tokenizer.process(translation.ch, translation, :ch) if translation
+      rescue => e
+      end
     end
   end
 

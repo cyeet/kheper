@@ -26,13 +26,15 @@ class TranslationFile
 end
 
 class Snippet
-  def initialize(str_ary, distance, parent_id)
+  def initialize(str_ary, distance, parent_id, lang)
     @snippet = str_ary
     @distance = distance  #distance from sentence start
     @parent_id = parent_id
+    @lang = lang
   end
 
   def permutate
+    spacer = @lang == :ch ? '' : ' '
     window_result = []
 
     # cycle through window size from 1
@@ -43,7 +45,7 @@ class Snippet
       right_e = @snippet.length
       (0..@snippet.length-window_size).each do |j|
         window = @snippet[j...j+window_size]
-        window_result << "(#{ActiveRecord::Base.sanitize(window.join)}, #{ActiveRecord::Base.sanitize(@snippet[left_s...left_e].join << '|' <<  @snippet[right_s...@snippet.length].join)}, #{@parent_id}, #{@distance + j}, #{@snippet.length})"
+        window_result << "(#{ActiveRecord::Base.sanitize(window.join(spacer))}, #{ActiveRecord::Base.sanitize(@snippet[left_s...left_e].join(spacer) << ' | ' <<  @snippet[right_s...@snippet.length].join(spacer))}, #{@parent_id}, #{@distance + j}, #{@snippet.length})"
         left_e += 1
         right_s += 1
       end
@@ -74,16 +76,20 @@ class Tokenizer < Sinatra::Base
     end
   end
 
-  def self.process(sentence, parent)
+  def self.process(sentence, parent, lang)
     words = self.tokenize sentence
+    permutations = []
     #words = words.unshift '<a>'
     max_length = [MAX_SEGMENT_LENGTH_EN, words.length].min
     (2..max_length).each do |segment_length|
       (0..words.length-segment_length).each do |i|
-        snippet = Snippet.new words[i...segment_length+i], i, parent.id
-        sql = "INSERT INTO ch_snippets (win, indow, ch_en_translation_id, pos, len) VALUES #{snippet.permutate.join(', ')}"
-        ActiveRecord::Base.connection.execute sql
+        snippet = Snippet.new words[i...segment_length+i], i, parent.id, lang
+        permutations << snippet.permutate
       end
+    end
+    if permutations.length > 0
+      sql = "INSERT INTO #{lang == :ch ? 'ch' : 'en'}_snippets (win, indow, ch_en_translation_id, pos, len) VALUES #{permutations.flatten.join(', ')}"
+      ActiveRecord::Base.connection.execute sql
     end
   end
 end

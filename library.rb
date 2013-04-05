@@ -9,6 +9,7 @@ end
 class ChEnTranslation < ActiveRecord::Base
   has_many :en_analyses
   has_many :ch_analyses
+  validates_uniqueness_of :en, :scope => :source
 end
 
 class EnAnalysis < ActiveRecord::Base
