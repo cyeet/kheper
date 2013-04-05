@@ -15,14 +15,15 @@ class CreateChEnTranslations < ActiveRecord::Migration
     end
 
     create_table :en_snippets do |t|
-      t.text :window, :null => false
+      t.text :win, :null => false
       t.text :indow, :null => false    # inverted window
-      t.text :hash, :null => false     # segment hash
-      t.integer :length, :null => false  # snippet length
+      t.references :ch_en_translation
+      t.integer :pos, :null => false  # window starting position from sentence
+      t.integer :len, :null => false  # snippet length
     end
 
     create_table :ch_snippets do |t|
-      t.text :window, :null => false
+      t.text :win, :null => false
       t.text :indow, :null => false    # inverted window
       t.references :ch_en_translation
       t.integer :pos, :null => false  # window starting position from sentence
@@ -33,10 +34,9 @@ class CreateChEnTranslations < ActiveRecord::Migration
       t.text :pattern, :null => false
       t.text :translation, :null => false
       t.integer :f, :default => 0
-      t.references :ch_en_translation
     end
 
-    create_table :ch_analyses do |t|
+    create_table :en_analyses do |t|
       t.text :pattern, :null => false
       t.text :translation, :null => false
       t.integer :f, :default => 0

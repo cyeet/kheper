@@ -13,7 +13,6 @@ require './tokenizer'
 require 'iconv'
 
 get '/parse' do
-  haml :layout
   stream do |out|
     $out = out #debug
     kheperize 'data'
@@ -59,7 +58,8 @@ get '/import/:encoding/*' do
     english = Nokogiri::XML(file2.read.gsub(/ID=(\d+)/, 'ID="\1"')).css('S')
 
     (0...chinese.length).each do |i|
-      ChEnTranslation.create :ch => chinese[i].text, :en =>  english[i].text, :source => params[:splat][0]
+      translation = ChEnTranslation.create :ch => chinese[i].text, :en =>  english[i].text, :source => params[:splat][0]
+      Tokenizer.process translation.en, translation
     end
   end
 
@@ -70,13 +70,4 @@ get '/' do
   haml :layout
 end
 
-def kheperize(folder)
-  files = Dir.entries(folder) - %w(. .. .DS_Store)  #skip . .. files
-  files.each do |path|
-    file = TranslationFile.new "#{folder}/#{path}", external_encoding:'utf-8'
-    file.take(10).each do |line|
-      words = Tokenizer.tokenize line
-      Tokenizer.process words
-    end
-  end
-end
+
