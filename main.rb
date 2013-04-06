@@ -10,6 +10,7 @@ require 'haml'
 require 'nokogiri'
 require './library'
 require './tokenizer'
+require './analyzer'
 require 'iconv'
 
 get '/parse' do
@@ -22,7 +23,7 @@ end
 
 get '/encoding' do
   @encodings = []
-  @folders = Dir['data/*/']
+  @folders = Dir['corpora/*/']
   haml :encoding
 end
 
@@ -68,6 +69,10 @@ get '/import/:encoding/*' do
   end
 
   end
+end
+
+get '/align/:word' do
+  translations = Analyzer.analyze params[:word]
 end
 
 get '/' do
