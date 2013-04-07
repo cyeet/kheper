@@ -1,0 +1,7 @@
+%table.table.table-striped.table-bordered
+  - @translations.each do |translation|
+    %tr
+      %td= translation.en
+      %td= translation.ch
+
+.pagination= will_paginate @translations

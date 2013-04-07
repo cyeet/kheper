@@ -1,0 +1,8 @@
+- unless  @candidates.empty?
+  %table.table.table-striped.table-bordered
+    - @candidates.each do |candidate|
+      %tr
+        %td= candidate[0]
+        %td= candidate[1]
+- else
+  .alert No matches found for #{params[:word]}

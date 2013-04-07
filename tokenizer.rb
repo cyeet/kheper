@@ -45,7 +45,7 @@ class Snippet
       right_e = @snippet.length
       (0..@snippet.length-window_size).each do |j|
         window = @snippet[j...j+window_size]
-        window_result << "(#{ActiveRecord::Base.sanitize(window.join(spacer))}, #{ActiveRecord::Base.sanitize(@snippet[left_s...left_e].join(spacer) << ' | ' <<  @snippet[right_s...@snippet.length].join(spacer))}, #{@parent_id}, #{@distance + j}, #{@snippet.length})"
+        window_result << "(#{ActiveRecord::Base.sanitize(window.join(spacer))}, #{ActiveRecord::Base.sanitize(@snippet[left_s...left_e].join(spacer) << ' | ' <<  @snippet[right_s...@snippet.length].join(spacer))}, #{@parent_id}, #{@distance + j}, #{window_size})"
         left_e += 1
         right_s += 1
       end

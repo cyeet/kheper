@@ -19,3 +19,7 @@ end
 class ChAnalysis < ActiveRecord::Base
   belongs_to :ch_en_translation
 end
+
+class ChSnippet < ActiveRecord::Base
+  belongs_to :ch_en_translation
+end

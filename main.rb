@@ -6,6 +6,8 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require 'sinatra/streaming'
 require 'sinatra/reloader' if development?
+require 'will_paginate'
+require 'will_paginate/active_record'
 require 'haml'
 require 'nokogiri'
 require './library'
@@ -13,18 +15,27 @@ require './tokenizer'
 require './analyzer'
 require 'iconv'
 
-get '/parse' do
-  stream do |out|
-    $out = out #debug
-    kheperize 'data'
-  end
+get '/' do
+  haml :index
 end
 
+get '/translations' do
+  @translations = ChEnTranslation.page(params[:page])
+  haml :translations
+end
 
 get '/encoding' do
   @encodings = []
   @folders = Dir['corpora/*/']
   haml :encoding
+end
+
+get '/align/:word' do
+  unless params[:word] == 'postechkle'
+    @candidates = Analyzer.analyze params[:word]
+    @candidates = @candidates.sort_by { |candidate| candidate[1] }
+  end
+  haml :align
 end
 
 post '/encoding' do
@@ -51,7 +62,7 @@ get '/import/:encoding/*' do
   #out << Haml::Engine.new(template).render(Proc.new {|n| n}, :foo => 's')
   folder = params[:splat][0]
   files = Dir.entries(folder) - %w(. .. .DS_Store)  #skip system files
-  files.each do |filename|
+  files.take(50).each do |filename|
     out << "#{folder}#{filename.gsub(/raw/,'eng')}" << '<br>'
     file1 = TranslationFile.new "#{folder}#{filename}", external_encoding: params[:encoding]
     file2 = TranslationFile.new "#{File.dirname folder}/English/#{filename.gsub(/raw/,'eng')}"
@@ -70,13 +81,3 @@ get '/import/:encoding/*' do
 
   end
 end
-
-get '/align/:word' do
-  translations = Analyzer.analyze params[:word]
-end
-
-get '/' do
-  haml :layout
-end
-
-
