@@ -1,0 +1,19 @@
+.bundle
+.DS_Store
+log/*.log
+tmp/*
+Thumbs.db
+*.swp
+.rvmrc
+.rbenv-gemsets
+gems/
+*.vim
+corpora/
+data/
+resources/
+
+# CTags
+tags
+.tags
+.tags_sorted_by_file
+
