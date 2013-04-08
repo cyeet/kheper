@@ -19,6 +19,10 @@ get '/' do
   haml :index
 end
 
+get '/translate' do
+  haml :translate
+end
+
 get '/translations' do
   @translations = ChEnTranslation.page(params[:page])
   haml :translations
@@ -31,6 +35,7 @@ get '/encoding' do
 end
 
 get '/align/:word' do
+  @candidates = []
   unless params[:word] == 'postechkle'
     @candidates = Analyzer.analyze params[:word]
     @candidates = @candidates.sort_by { |candidate| candidate[1] }

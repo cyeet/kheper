@@ -1,0 +1,31 @@
+.selector
+  %form
+    %fieldset
+      .btn-group
+        %a.btn.dropdown-toggle{'data-toggle' => 'dropdown', href:'#'}
+          From: English
+          %span.caret/
+        %ul.dropdown-menu
+          %li
+            %a{href:'#'} From: Chinese
+
+      .btn-group
+        %a.btn.dropdown-toggle{'data-toggle' => 'dropdown', href:''}
+          %i.icon-retweet
+
+      .btn-group
+        %a.btn.dropdown-toggle{'data-toggle' => 'dropdown', href:'#'}
+          To: Chinese
+          %span.caret/
+        %ul.dropdown-menu
+          %li
+            %a{href:'#'} To: English
+
+      %a.btn.btn-info
+        Translate
+
+    %fieldset
+      %legend
+      %textarea.span6{rows:10}
+
+
