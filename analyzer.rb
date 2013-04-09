@@ -7,8 +7,8 @@ class Analyzer < ActiveRecord::Base
 
     (min..max).each do |len|
       sql = <<-EOD
-      SELECT win FROM ch_snippets WHERE ch_en_translation_id IN
-      (SELECT ch_en_translation_id FROM en_snippets WHERE win = '#{query}' GROUP BY ch_en_translation_id)
+      SELECT win FROM zh_snippets WHERE zh_en_translation_id IN
+      (SELECT zh_en_translation_id FROM en_snippets WHERE win = '#{query}' GROUP BY zh_en_translation_id)
       AND len = #{len}
       GROUP BY win ORDER BY COUNT(*) DESC LIMIT 10
       EOD
@@ -21,16 +21,16 @@ class Analyzer < ActiveRecord::Base
           SELECT COALESCE(o1.win,'#{candidate.win}') AS qry,
             COUNT(o1.ch_en_translation_id) + COUNT(o2.ch_en_translation_id) AS misses
           FROM (
-            SELECT win, ch_en_translation_id 
-            FROM ch_snippets
+            SELECT win, zh_en_translation_id 
+            FROM zh_snippets
             WHERE win = '#{candidate.win}'
-            GROUP BY win, ch_en_translation_id
+            GROUP BY win, zh_en_translation_id
           ) o1
           FULL OUTER JOIN (
-            SELECT win, ch_en_translation_id 
+            SELECT win, zh_en_translation_id 
             FROM en_snippets
             WHERE win IN ('#{query}','#{query},')
-            GROUP BY win, ch_en_translation_id
+            GROUP BY win, zh_en_translation_id
           ) o2
           ON o1.ch_en_translation_id = o2.ch_en_translation_id
           WHERE o1.ch_en_translation_id IS NULL

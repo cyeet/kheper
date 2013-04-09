@@ -2,7 +2,7 @@ require 'stringio'
 require 'sinatra/base'
 require 'sinatra/reloader'
 
-class TranslationFile
+class TranslationFile < File
   include Enumerable
 
   def initialize(path, external_encoding: 'utf-8')
@@ -66,7 +66,6 @@ class Tokenizer < Sinatra::Base
   end
 
   def self.tokenize(str)
-    str.delete!("\n")
     unless str =~ /\p{Han}/
       str.chomp.split /[[:blank:]]+/
     else

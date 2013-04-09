@@ -1,12 +1,20 @@
-%form{:action => "/encoding", :method => 'post'}
+%form{:action => "/encoding", :method => 'get'}
   %select{:name => :folder}
     - @folders.each do |folder|
       %option{:value => folder}= folder
   %input(type='submit')
 
-%table.table.table-striped.table-bordered
-  - @encodings.each do |encoding, text|
-    %tr
-      %td
-        %a{:href => "import/#{encoding}/#{params[:folder]}"}= encoding
-      %td&= p text
+- if @encodings
+  %table.table.table-striped.table-bordered
+    - @encodings.each do |encoding, text|
+      %tr
+        %td
+          %a{:href => "/import?encoding=#{encoding}&filename=#{params[:filename]}"}= encoding
+        %td&= p text
+
+- if @filenames
+  %table.table.table-striped.table-bordered
+    - @filenames.each do |filename|
+      %tr
+        %td
+          %a{:href => "encoding?filename=#{filename}"}= filename

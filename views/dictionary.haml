@@ -1,0 +1,10 @@
+%table.table.table-striped.table-bordered
+  - @definitions.each do |definition|
+    %tr
+      %td= definition.id
+      %td= definition.zh
+      %td= definition.len
+      %td= definition.en
+
+.well= page_entries_info @definitions
+.pagination= will_paginate @definitions
