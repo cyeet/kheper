@@ -1,6 +1,41 @@
 .hero-unit
-  %h1 Kheper
+  %h1
+    %i.icon-lightbulb
+    Kheper
   %p Kheper is a context-based machine translation system that allows you to automatically train translation models for any language pair. All you need is a collection of translated texts (parallel corpus). An efficient search algorithm finds quickly the highest probability translation among the exponential number of choices.
+  .spacer.clearfix
+  .spacer.clearfix
   %p
-    %a.btn.btn-primary.btn-large Learn more &raquo;
+    %a.btn.btn-primary.btn-large{href:'/about'} Learn more &raquo;
 
+.row-fluid
+  .span4
+    %h4 Overall project progress report
+    .progress.progress-success
+      .bar{style:"width: 30%"}
+  .span3.offset1
+    %h4 Completed modules
+    %ul.icons
+      %li
+        %i.icon-check
+        Corpus importer
+      %li
+        %i.icon-check
+        Word alignment
+      %li
+        %i.icon-check
+        Translation rules
+      %li
+        %i.icon-check-empty
+        Discriminative model
+      %li
+        %i.icon-check-empty
+        Decoder
+
+
+  .span4
+    %i.icon-quote-left.icon-2x.pull-left.icon-muted
+    %h4 Moses did not exist
+    %i.icon-quote-right.icon-2x.pull-right.icon-muted
+    .spacer.clearfix
+    Ludwig Wittgenstein, Philosophical Investigations §79

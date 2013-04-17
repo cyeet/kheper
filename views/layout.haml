@@ -10,12 +10,16 @@
     / Le styles
     %link{:href => "/bootstrap/css/bootstrap.css", :rel => "stylesheet"}/
     %link{:href => "/bootstrap/css/bootstrap-responsive.css", :rel => "stylesheet"}/
+    %link{:href => "/css/font-awesome.min.css", :rel => "stylesheet"}/
     %link{:href => "/css/app.css", :rel => "stylesheet"}/
     / Le fav and touch icons
     %link{:href => "/images/favicon.ico", :rel => "shortcut icon"}/
     %link{:href => "/images/apple-touch-icon.png", :rel => "apple-touch-icon"}/
     %link{:href => "/images/apple-touch-icon-72x72.png", :rel => "apple-touch-icon", :sizes => "72x72"}/
     %link{:href => "/images/apple-touch-icon-114x114.png", :rel => "apple-touch-icon", :sizes => "114x114"}/
+
+    %script{:src => "/js/jquery-1.9.1.min.js"}
+    %script{:src => "/bootstrap/js/bootstrap.js"}
 
   %body
     #wrap
@@ -33,13 +37,21 @@
                   /.active
                   %a{:href => "/translate"} Translate
                 %li
-                  %a{:href => "/translations"} Translation Corpora
+                  %a{:href => "/translations"}
+                    %i.icon-reorder
+                    Translation Corpora
                 %li
-                  %a{:href => "/encoding"} Parse Folder
+                  %a{:href => "/encoding"}
+                    %i.icon-folder-open-alt
+                    Parse Folder
                 %li
-                  %a{:href => "/align/postechkle"} Align
+                  %a{:href => "/align/postechkle"}
+                    %i.icon-random
+                    Align
                 %li
-                  %a{:href => "/dictionary/zh"} Dictionary
+                  %a{:href => "/dictionary/zh"}
+                    %i.icon-book
+                    Dictionary
             / /.nav-collapse
       .container= yield
       #push
@@ -53,6 +65,3 @@
           |
           %a{href:'http://kle.postech.ac.kr/'}
             Knowledge and Language Engineering Lab
-
-    %script{:src => "/js/jquery-1.9.1.min.js"}
-    %script{:src => "/bootstrap/js/bootstrap.js"}

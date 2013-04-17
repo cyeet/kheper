@@ -58,6 +58,7 @@ GEM
     rack-test (0.6.2)
       rack (>= 1.0)
     rake (0.9.6)
+    redis (3.0.3)
     sinatra-activerecord (1.2.2)
       activerecord (~> 3.0)
       sinatra (~> 1.0)
@@ -82,6 +83,7 @@ DEPENDENCIES
   pg
   pry
   rake
+  redis
   sinatra!
   sinatra-activerecord
   sinatra-contrib!

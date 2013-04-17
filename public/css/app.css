@@ -55,3 +55,26 @@ body {
 .hero-unit h1 {
   margin-bottom: 20px;
 }
+
+.spacer {
+  margin-top: 20px;
+}
+textarea {
+  width: 100%;
+  min-height:223px;
+}
+.translated {
+  min-height:200px;
+}
+input.search-query {
+  height:30px;
+}
+.well {
+  padding:10px;
+}
+.progress-success {
+  margin-top:10px;
+}
+.quote {
+  color: #999999;
+}

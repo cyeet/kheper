@@ -1,3 +1,10 @@
+%form.form-search{method:'get'}
+  .input-append
+    %input.span3.search-query{type:'text',name:'query'}
+    %button.btn{type:'submit'}
+      %i.icon-search
+      Search
+
 %table.table.table-striped.table-bordered
   - @definitions.each do |definition|
     %tr

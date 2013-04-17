@@ -2,6 +2,30 @@
   - @translations.each do |translation|
     %tr
       %td= translation.en
-      %td= translation.zh
+      %td.chinese= translation.zh
 
 .pagination= will_paginate @translations
+`
+:javascript
+
+  $.ajaxPrefilter(function (options, originalOptions, jqXHR) { 
+    var error = options.error;
+    options.error = function (jqXHR, textStatus, errorThrown) { 
+    };
+  });
+
+  $(document).ready(function() {
+    $('.chinese').click(function() {
+      $text = encodeURIComponent($(this).text());
+      $url = 'http://translate.google.com/translate_a/t?client=t&text='+$text+'&hl=en&sl=zh-CN&tl=en&ie=UTF-8&oe=UTF-8&multires=1&otf=2&srcrom=1&ssel=3&tsel=3&sc=1';
+
+  $v = $.when($.ajax({
+  url: $url,
+  async: true,
+  dataType: 'jsonp',
+  converters: { "jsonp": function (jsonString) { console.log(1)  }},
+  dataFilter: function (jsonString, type) { console.log(jsonString) },
+  crossDomain: true,
+          })).done();
+    });
+  });

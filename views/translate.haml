@@ -3,29 +3,42 @@
     %fieldset
       .btn-group
         %a.btn.dropdown-toggle{'data-toggle' => 'dropdown', href:'#'}
-          From: English
+          From:
+          %span#lng1 English
           %span.caret/
         %ul.dropdown-menu
           %li
-            %a{href:'#'} From: Chinese
+            %a{href:'#'} Chinese
 
       .btn-group
-        %a.btn.dropdown-toggle{'data-toggle' => 'dropdown', href:''}
-          %i.icon-retweet
+        %a#lng-swp.btn.dropdown-toggle{'data-toggle' => 'dropdown', href:''}
+          %i.icon-exchange
 
       .btn-group
         %a.btn.dropdown-toggle{'data-toggle' => 'dropdown', href:'#'}
-          To: Chinese
+          To:
+          %span#lng2 Chinese
           %span.caret/
         %ul.dropdown-menu
           %li
-            %a{href:'#'} To: English
+            %a{href:'#'} English
 
       %a.btn.btn-info
         Translate
 
-    %fieldset
-      %legend
-      %textarea.span6{rows:10}
+    .spacer.row-fluid
+      .span6
+        %textarea{rows:10}
+          = @translation.en
+      .span6
+        .well.translated
+          = @translation.zh
 
-
+:javascript
+  $(document).ready(function() {
+    $("#lng-swp").click(function() {
+      var tmp = $('#lng1').text();
+      $("#lng1").text($("#lng2").text());
+      $('#lng2').text(tmp);
+    });
+  });

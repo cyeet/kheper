@@ -1,5 +1,6 @@
 # encoding: UTF-8
 
+require 'redis'
 require 'pry'
 require 'awesome_print'
 require 'sinatra'
@@ -19,7 +20,12 @@ get '/' do
   haml :index
 end
 
+get '/about' do
+  haml :about
+end
+
 get '/translate' do
+  @translation = ZhEnTranslation.first(:conditions => [ "id >= ?", rand(ZhEnTranslation.count)])
   haml :translate
 end
 
@@ -59,17 +65,29 @@ get '/align/:word' do
   haml :align
 end
 
-get '/tr' do
-  arr = [1]
+get '/ty' do
+  ary = []
   @snippet = %w(1 2 3 4 5 6 7 8 9 10)
   (1...@snippet.length).each do |window_size|
+    @snippet.each_cons(window_size) do |window|
+      ary << window
+    end
+  end
+  ap ary
+end
+
+get '/tr' do
+  arr = []
+  @snippet = %w(1 2 3 4 5 6 7 8 9 10)
+  @snippet = Tokenizer.tokenize '能夺走足够选票从而使另一侯选人落选的侯选人'
+  @snippet.length.downto(2).each do |window_size|
     left_s = 0
     left_e = 0
     right_s = window_size
     right_e = @snippet.length
     (0..@snippet.length-window_size).each do |j|
       window = @snippet[j...j+window_size]
-      arr << window
+      arr << window if ZhDictionary.exists?(:zh => window.join)
       left_e += 1
       right_s += 1
     end
@@ -99,7 +117,14 @@ get '/dictionary/:language' do
       end
     end
   end
-  @definitions = ZhDictionary.order('zh').page(params[:page])
+
+  if params[:query]
+    lex = ZhDictionary.arel_table
+    query = params[:query]
+    @definitions = ZhDictionary.where(lex[:zh].eq(query).or(lex[:en].eq(query))).page(1)
+  else
+    @definitions = ZhDictionary.order('zh').page(params[:page])
+  end
   haml :dictionary
 end
 
