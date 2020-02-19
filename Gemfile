@@ -9,7 +9,6 @@ gem 'awesome_print'
 gem 'iconv'
 
 gem 'redis'
-gem 'will_paginate', '~> 3.0'
 gem 'haml'
 gem 'activerecord'
 gem 'pg' #postgesql
