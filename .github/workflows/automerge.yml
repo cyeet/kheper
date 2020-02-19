@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: automerge
-        uses: "pascalgn/automerge-action@master"
+        uses: "pascalgn/automerge-action@0.7.4"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_ACTIONS }}"
           MERGE_METHOD: "squash"
