@@ -1,2 +1,5 @@
-callback:
-  status: "success"
+{
+  "callback": {
+    "status": "success"
+  }
+}
