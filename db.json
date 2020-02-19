@@ -1,3 +1,2 @@
-{
-  "status": "success"
-}
+callback:
+  status: "success"
