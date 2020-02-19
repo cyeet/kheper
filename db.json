@@ -1,6 +1,8 @@
 {
   "callback": {
-    "status": "success",
     "context": "default"
+    "state": "success",
+    "target_url": "https://my-json-server.typicode.com/cyeet/kheper/callback",
+    "description": "CI"
   }
 }
