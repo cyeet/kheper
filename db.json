@@ -1,5 +1,6 @@
 {
   "callback": {
-    "status": "success"
+    "status": "success",
+    "context": "default"
   }
 }
