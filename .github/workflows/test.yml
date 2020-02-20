@@ -1,6 +1,5 @@
 name: test
 on: 
-  status: {}
   pull_request:
     types: [synchronize]
 jobs:
