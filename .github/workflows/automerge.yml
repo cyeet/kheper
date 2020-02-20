@@ -5,7 +5,7 @@ on:
   check_suite: 
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  "*/5 * * * *"
+    - cron:  "* * * * *"
 jobs:
   automerge:
     runs-on: ubuntu-latest
