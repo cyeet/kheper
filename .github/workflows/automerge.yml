@@ -1,8 +1,5 @@
 name: automerge
 on: 
-  status: 
-  check_run: 
-  check_suite:
   pull_request:
     types: [synchronize]
 jobs:
