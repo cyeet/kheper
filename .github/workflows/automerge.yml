@@ -2,13 +2,13 @@ name: automerge
 on: 
   status: {}
   pull_request:
-    types: [labeled synchronize]
+    types: [labeled, synchronize]
 jobs:
   automerge:
     runs-on: ubuntu-latest
     steps:
       - name: Sleep first
-        run: sleep 301
+        run: sleep 30
       - name: automerge
         uses: "pascalgn/automerge-action@v0.7.4"
         env:
