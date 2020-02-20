@@ -2,9 +2,10 @@ name: automerge
 on: 
   status: 
   check_run: 
-    types: [completed]
   check_suite: 
-    types: [completed]
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  "*/5 * * * *"
 jobs:
   automerge:
     runs-on: ubuntu-latest
