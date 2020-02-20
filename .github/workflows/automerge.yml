@@ -10,7 +10,7 @@ jobs:
   automerge:
     runs-on: ubuntu-latest
     steps:
-      - Sleep first
+      - name: Sleep first
         run: sleep 300
       - name: automerge
         uses: "pascalgn/automerge-action@v0.7.4"
